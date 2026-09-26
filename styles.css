@@ -1,0 +1,725 @@
+/* Gua Casebook: a restrained paper palette scoped to this plugin view. */
+.gua-casebook {
+	--gua-page: #f5f3ee;
+	--gua-surface: #fcfbf8;
+	--gua-ink: #292723;
+	--gua-muted-ink: #716c64;
+	--gua-line: #ded9cf;
+	--gua-hover: #eeebe4;
+	--gua-accent-color: #a43e35;
+	--gua-accent-wash: #f6e9e5;
+	--gua-focus-ring: rgba(164, 62, 53, 0.28);
+	--gua-wood: #2f7053;
+	--gua-fire: #a43e35;
+	--gua-earth: #8a641f;
+	--gua-metal: #80631e;
+	--gua-water: #2c6089;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+	height: 100%;
+	background: var(--gua-page);
+	color: var(--gua-ink);
+	font-family: var(--font-interface, system-ui, sans-serif);
+	font-size: 14px;
+	line-height: 1.55;
+}
+
+.gua-casebook *,
+.gua-casebook *::before,
+.gua-casebook *::after {
+	box-sizing: border-box;
+}
+
+.theme-dark .gua-casebook {
+	--gua-page: #1f201f;
+	--gua-surface: #292a27;
+	--gua-ink: #ebe8e1;
+	--gua-muted-ink: #b3ada3;
+	--gua-line: #41423d;
+	--gua-hover: #353630;
+	--gua-accent-color: #d77d70;
+	--gua-accent-wash: #3b2927;
+	--gua-focus-ring: rgba(215, 125, 112, 0.35);
+	--gua-wood: #8dc09e;
+	--gua-fire: #e38e83;
+	--gua-earth: #c6a56e;
+	--gua-metal: #d2b36d;
+	--gua-water: #8eb9d6;
+}
+
+/* Optional setting for users who want their Obsidian theme's own surfaces. */
+.gua-casebook.is-theme-native {
+	--gua-page: var(--background-primary);
+	--gua-surface: var(--background-secondary);
+	--gua-ink: var(--text-normal);
+	--gua-muted-ink: var(--text-muted);
+	--gua-line: var(--background-modifier-border);
+	--gua-hover: var(--background-modifier-hover);
+	--gua-accent-color: var(--interactive-accent);
+	--gua-accent-wash: var(--background-modifier-hover);
+}
+
+.gua-casebook h1,
+.gua-casebook h2,
+.gua-casebook h3,
+.gua-casebook p {
+	margin-block: 0;
+}
+
+.gua-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+	padding: 20px 24px 10px;
+}
+
+.gua-header h1,
+.gua-header h2,
+.gua-header .gua-title {
+	color: var(--gua-ink);
+	font-family: "Songti SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
+	font-size: clamp(21px, 2.3vw, 27px);
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.gua-toolbar {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px;
+	padding: 8px 24px 16px;
+}
+
+.gua-casebook .gua-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: 34px;
+	padding: 5px 12px;
+	border: 1px solid var(--gua-line);
+	border-radius: 8px;
+	background: var(--gua-surface);
+	box-shadow: none;
+	color: var(--gua-ink);
+	font: inherit;
+	font-size: 13px;
+	font-weight: 500;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.gua-casebook .gua-button:hover {
+	background: var(--gua-hover);
+	border-color: var(--gua-muted-ink);
+}
+
+.gua-casebook .gua-button--primary,
+.gua-casebook .gua-button--primary:hover {
+	border-color: var(--gua-accent-color);
+	background: var(--gua-accent-color);
+	color: var(--text-on-accent, #fff);
+}
+
+.gua-casebook .gua-button--primary:hover {
+	filter: brightness(1.08);
+}
+
+.gua-casebook .gua-button:disabled {
+	opacity: 0.48;
+	cursor: default;
+}
+
+.gua-casebook .gua-search,
+.gua-casebook .gua-search input {
+	min-width: 0;
+}
+
+.gua-casebook input.gua-search,
+.gua-casebook .gua-search input {
+	flex: 1 1 220px;
+	width: 100%;
+	min-height: 34px;
+	padding: 6px 10px;
+	border: 1px solid var(--gua-line);
+	border-radius: 8px;
+	background: var(--gua-surface);
+	box-shadow: none;
+	color: var(--gua-ink);
+	font: inherit;
+}
+
+.gua-casebook .gua-search:not(input) {
+	flex: 1 1 220px;
+}
+
+.gua-casebook input::placeholder,
+.gua-casebook textarea::placeholder {
+	color: var(--gua-muted-ink);
+	opacity: 0.8;
+}
+
+.gua-casebook :is(button, input, textarea, select, [tabindex]):focus-visible {
+	outline: 2px solid var(--gua-accent-color);
+	outline-offset: 2px;
+	box-shadow: 0 0 0 4px var(--gua-focus-ring);
+}
+
+.gua-layout {
+	display: grid;
+	grid-template-columns: minmax(225px, 290px) minmax(0, 1fr);
+	min-height: 0;
+	flex: 1 1 auto;
+	border-top: 1px solid var(--gua-line);
+}
+
+.gua-list,
+.gua-detail {
+	min-width: 0;
+	min-height: 0;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+.gua-list {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 12px;
+	border-right: 1px solid var(--gua-line);
+	background: var(--gua-surface);
+}
+
+.gua-list-item {
+	display: block;
+	width: 100%;
+	padding: 10px 11px 10px 12px;
+	border: 0;
+	border-left: 3px solid transparent;
+	border-radius: 8px;
+	background: transparent;
+	color: var(--gua-ink);
+	font: inherit;
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.gua-list-item:hover {
+	background: var(--gua-hover);
+}
+
+.gua-list-item.is-active,
+.gua-list-item[aria-selected="true"] {
+	border-left-color: var(--gua-accent-color);
+	background: var(--gua-accent-wash);
+}
+
+.gua-list-item h3,
+.gua-list-item .gua-list-title {
+	margin: 0 0 3px;
+	color: var(--gua-ink);
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+
+.gua-list-item .gua-list-summary {
+	color: var(--gua-muted-ink);
+	font-size: 12px;
+	line-height: 1.5;
+	overflow-wrap: anywhere;
+}
+
+.gua-detail {
+	padding: 24px clamp(16px, 3vw, 36px) 36px;
+}
+
+.gua-detail > * {
+	max-width: 900px;
+	margin-inline: auto;
+}
+
+.gua-detail h2,
+.gua-detail .gua-detail-title {
+	font-family: "Songti SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
+	font-size: clamp(21px, 2vw, 26px);
+	font-weight: 600;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+
+.gua-section {
+	margin-block: 20px;
+}
+
+.gua-section > h3 {
+	margin-bottom: 9px;
+	font-size: 15px;
+	font-weight: 600;
+}
+
+.gua-detail-actions {
+	display: flex;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-block: 12px;
+}
+
+.gua-casebook .gua-back {
+	align-self: flex-start;
+	padding: 4px 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	color: var(--gua-accent-color);
+	font: inherit;
+	cursor: pointer;
+}
+
+.gua-casebook .gua-back:hover {
+	text-decoration: underline;
+}
+
+.gua-card {
+	margin-block: 14px;
+	padding: 18px 20px;
+	border: 1px solid var(--gua-line);
+	border-radius: 10px;
+	background: var(--gua-surface);
+	box-shadow: none;
+}
+
+.gua-card h3,
+.gua-card .gua-section-title {
+	margin-bottom: 10px;
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
+.gua-card p + p {
+	margin-top: 8px;
+}
+
+.gua-card p,
+.gua-section p {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.gua-meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 4px 14px;
+	color: var(--gua-muted-ink);
+	font-size: 12px;
+}
+
+.gua-meta time,
+.gua-meta .gua-date {
+	font-variant-numeric: tabular-nums;
+}
+
+.gua-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+
+.gua-tag,
+.gua-status {
+	display: inline-flex;
+	align-items: center;
+	max-width: 100%;
+	padding: 1px 7px;
+	border: 1px solid var(--gua-line);
+	border-radius: 5px;
+	background: var(--gua-surface);
+	color: var(--gua-muted-ink);
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 1.65;
+}
+
+.gua-status.is-complete {
+	border-color: var(--gua-accent-color);
+	color: var(--gua-accent-color);
+}
+
+.gua-accent {
+	color: var(--gua-accent-color);
+}
+
+.gua-muted {
+	color: var(--gua-muted-ink);
+}
+
+.gua-casebook .gua-element-wood { color: var(--gua-wood); }
+.gua-casebook .gua-element-fire { color: var(--gua-fire); }
+.gua-casebook .gua-element-earth { color: var(--gua-earth); }
+.gua-casebook .gua-element-metal { color: var(--gua-metal); }
+.gua-casebook .gua-element-water { color: var(--gua-water); }
+
+/* Each line uses the same four tracks: spirit, original, movement, changed. */
+.gua-hex {
+	width: 100%;
+	min-width: 0;
+	overflow-x: auto;
+	color: var(--gua-ink);
+	font-size: 14px;
+	-webkit-overflow-scrolling: touch;
+}
+
+.gua-hex-title,
+.gua-hex-row {
+	display: grid;
+	grid-template-columns: 2.2em minmax(0, 1fr) 1em minmax(0, 1fr);
+	align-items: center;
+	column-gap: 4px;
+	min-width: 0;
+	padding-inline: 0;
+}
+
+.gua-hex-title {
+	padding-block: 4px 10px;
+	border-bottom: 1px solid var(--gua-line);
+	font-family: "Songti SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
+	font-size: inherit;
+	font-weight: 600;
+}
+
+.gua-hex-row {
+	min-height: 48px;
+	padding-block: 7px;
+	border-bottom: 1px solid var(--gua-line);
+}
+
+.gua-hex-row:last-child {
+	border-bottom: 0;
+}
+
+.gua-hex-row.is-moving {
+	background: var(--gua-accent-wash);
+}
+
+.gua-hex-spirit {
+	color: var(--gua-muted-ink);
+	white-space: nowrap;
+}
+
+.gua-hex-primary,
+.gua-hex-changed {
+	display: grid;
+	grid-template-columns: 2em 2em minmax(1em, 1fr) 1em;
+	align-items: center;
+	column-gap: 3px;
+	min-width: 0;
+}
+
+.gua-hex-relative { grid-column: 1; grid-row: 1; white-space: nowrap; }
+.gua-hex-branch { grid-column: 2; grid-row: 1; white-space: nowrap; }
+.gua-hex-primary > .gua-yao,
+.gua-hex-changed > .gua-yao { grid-column: 3; grid-row: 1; }
+.gua-hex-role { grid-column: 4; grid-row: 1; color: var(--gua-accent-color); font-size: 12px; white-space: nowrap; }
+.gua-hex-hidden { grid-column: 1 / -1; grid-row: 2; color: var(--gua-muted-ink); font-size: 11px; }
+
+.gua-hex-moving {
+	color: var(--gua-accent-color);
+	font-size: 16px;
+	font-weight: 700;
+	text-align: center;
+}
+
+/* Single and broken lines are drawn with CSS, so font glyphs cannot shift columns. */
+.gua-yao {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	height: 14px;
+	vertical-align: middle;
+	color: var(--gua-ink);
+}
+
+.gua-yao::before,
+.gua-yao::after {
+	position: absolute;
+	top: calc(50% - 2px);
+	height: 4px;
+	border-radius: 1px;
+	background: currentColor;
+	content: "";
+}
+
+.gua-yao.is-yang::before {
+	left: 0;
+	width: 100%;
+}
+
+.gua-yao.is-yin::before {
+	left: 0;
+	width: 43%;
+}
+
+.gua-yao.is-yin::after {
+	right: 0;
+	width: 43%;
+}
+
+.gua-yao.is-unset {
+	color: var(--gua-muted-ink);
+	font-size: 13px;
+	text-align: center;
+}
+
+.gua-hex-row.is-moving .gua-hex-primary .gua-yao {
+	color: var(--gua-accent-color);
+}
+
+.gua-empty {
+	padding: 48px 24px;
+	color: var(--gua-muted-ink);
+	text-align: center;
+}
+
+/* Entry and edit controls share the same quiet card treatment. */
+.gua-form {
+	display: grid;
+	gap: 14px;
+	min-width: 0;
+}
+
+.gua-form label {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	min-width: 0;
+	color: var(--gua-ink);
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.gua-form :is(input, textarea, select) {
+	width: 100%;
+	min-height: 34px;
+	padding: 6px 9px;
+	border: 1px solid var(--gua-line);
+	border-radius: 7px;
+	background: var(--gua-surface);
+	box-shadow: none;
+	color: var(--gua-ink);
+	font: inherit;
+	font-weight: 400;
+}
+
+.gua-form textarea {
+	min-height: 88px;
+	line-height: 1.6;
+	resize: vertical;
+}
+
+.gua-form :is(input, textarea, select):hover {
+	border-color: var(--gua-muted-ink);
+}
+
+.gua-casebook.gua-editor-modal {
+	height: auto;
+	max-height: min(90vh, 900px);
+	padding: 18px 22px;
+	overflow-y: auto;
+}
+
+.gua-editor-modal .gua-line-editor {
+	padding: 12px;
+	border: 1px solid var(--gua-line);
+	border-radius: 8px;
+	background: var(--gua-surface);
+}
+
+.gua-editor-modal .gua-line-editor + .gua-line-editor {
+	margin-top: 7px;
+}
+
+.gua-editor-modal .gua-line-grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	align-items: end;
+	gap: 8px;
+}
+
+.gua-editor-modal .gua-line-grid label {
+	font-size: 12px;
+}
+
+.modal.gua-case-editor {
+	width: min(720px, 94vw);
+}
+
+.gua-editor-modal > h2 {
+	margin-bottom: 18px;
+	font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", serif;
+}
+
+.gua-casebook .gua-entry-heading {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 8px 12px;
+	margin-top: 6px;
+}
+
+.gua-casebook .gua-entry-mode { font-weight: 600; }
+.gua-casebook .gua-entry-summary {
+	color: var(--gua-accent-color);
+	font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", serif;
+	font-size: 18px;
+	text-align: center;
+	overflow-wrap: anywhere;
+}
+.gua-casebook .gua-entry-counter,
+.gua-casebook .gua-entry-help {
+	color: var(--gua-muted-ink);
+	font-size: 12px;
+}
+.gua-casebook .gua-entry-help { margin: 8px 0 12px; }
+
+.gua-casebook .gua-yao-picker {
+	display: grid;
+	gap: 10px;
+	padding: 14px;
+	border: 1px solid var(--gua-line);
+	border-radius: 12px;
+	background: var(--gua-surface);
+}
+.gua-casebook .gua-pick-row {
+	display: grid;
+	grid-template-columns: 2.5rem minmax(0, 1fr) 44px;
+	align-items: center;
+	gap: 12px;
+}
+.gua-casebook .gua-pick-label { font-size: 15px; white-space: nowrap; }
+.gua-casebook .gua-pick-row.is-moving .gua-pick-label { color: var(--gua-accent-color); }
+
+.gua-casebook .gua-line-toggle,
+.gua-casebook .gua-move-toggle {
+	min-width: 0;
+	width: 100%;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: 10px;
+	box-shadow: none;
+	cursor: pointer;
+	touch-action: manipulation;
+}
+.gua-casebook .gua-line-toggle { background: transparent; }
+.gua-casebook .gua-line-toggle:hover { background: var(--gua-hover); }
+.gua-casebook .gua-line-stroke {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 24px;
+	color: var(--gua-accent-color);
+	font-size: 12px;
+	line-height: 24px;
+	text-align: center;
+}
+.gua-casebook .gua-line-stroke::before,
+.gua-casebook .gua-line-stroke::after {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	border-radius: 12px;
+	background: currentColor;
+	content: "";
+}
+.gua-casebook .gua-line-toggle.is-yang .gua-line-stroke::before { left: 0; width: 100%; }
+.gua-casebook .gua-line-toggle.is-yin .gua-line-stroke::before { left: 0; width: 44%; }
+.gua-casebook .gua-line-toggle.is-yin .gua-line-stroke::after { right: 0; width: 44%; }
+.gua-casebook .gua-line-toggle.is-unset { border: 1px dashed var(--gua-line); }
+.gua-casebook .gua-move-toggle {
+	background: var(--gua-hover);
+	color: var(--gua-muted-ink);
+	font: inherit;
+	font-weight: 700;
+}
+.gua-casebook .gua-move-toggle[aria-pressed="true"] {
+	background: var(--gua-accent-color);
+	color: var(--gua-surface);
+}
+.gua-casebook .gua-entry-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 12px;
+	font-size: 12px;
+}
+.gua-casebook .gua-advanced {
+	border: 1px solid var(--gua-line);
+	border-radius: 8px;
+	background: var(--gua-surface);
+}
+.gua-casebook .gua-advanced > summary {
+	padding: 12px;
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: 500;
+}
+.gua-casebook .gua-advanced-body { padding: 4px 12px 14px; }
+.theme-dark .gua-editor-modal input[type="datetime-local"] { color-scheme: dark; }
+.gua-editor-modal > .gua-form > .gua-detail-actions {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+}
+.gua-editor-modal > .gua-form > .gua-detail-actions button,
+.gua-casebook .gua-entry-footer .gua-button { min-height: 44px; }
+
+@media (max-width: 420px) {
+	.gua-casebook .gua-entry-summary { grid-column: 1 / -1; grid-row: 2; text-align: left; }
+	.gua-casebook .gua-entry-counter { grid-column: 3; grid-row: 1; }
+	.gua-casebook .gua-yao-picker { padding: 10px; gap: 6px; }
+	.gua-casebook .gua-pick-row { gap: 8px; }
+}
+
+@media (max-width: 720px) {
+	.gua-header { padding: 14px 14px 6px; }
+	.gua-toolbar { padding: 8px 14px 12px; }
+	.gua-toolbar .gua-search { flex-basis: 100%; }
+	.gua-layout { display: block; overflow-y: auto; }
+	.gua-list { max-height: 42vh; border-right: 0; border-bottom: 1px solid var(--gua-line); }
+	.gua-detail { overflow-y: visible; padding: 16px 14px 24px; }
+	.gua-card { padding: 14px; margin-block: 10px; }
+	.gua-casebook.is-detail-open .gua-list { display: none; }
+	.gua-casebook.is-detail-open .gua-detail { min-height: 100%; }
+	.gua-casebook.gua-editor-modal { max-height: 90vh; padding: 14px; }
+	.gua-editor-modal .gua-line-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 380px) {
+	.gua-casebook { font-size: 13px; }
+	.gua-header h1,
+	.gua-header h2,
+	.gua-header .gua-title { font-size: 21px; }
+	.gua-editor-modal .gua-line-grid { grid-template-columns: minmax(0, 1fr); }
+}
+.gua-auto-preview { display: grid; gap: 12px; min-width: 0; }
+.gua-card { container-type: inline-size; }
+.gua-hex { font-size: clamp(12px, 4.3cqw, 16px); }
+.gua-palace { display: block; font: 0.8em var(--font-interface); color: var(--gua-muted-ink); margin-top: 6px; }
+.gua-pillars { font-size: clamp(17px, 4.6cqw, 25px); font-weight: 700; white-space: pre-wrap; }
+.gua-voids { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--gua-muted-ink); margin: 8px 0 14px; font-size: 12px; }
+.gua-day-void { color: var(--gua-accent-color); font-weight: 600; }
+.gua-calendar-extra { font-size: 13px; line-height: 1.9; white-space: pre-wrap; }
+.gua-rule { font-size: 11px; line-height: 1.6; margin: 0; }
+.gua-calc-error { color: var(--gua-accent-color); }

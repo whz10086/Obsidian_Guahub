@@ -1,0 +1,10 @@
+node_modules/
+/main.js
+/release/
+/backups/
+/qa/
+*.zip
+.env
+.env.*
+!.env.example
+*.log
