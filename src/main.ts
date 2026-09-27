@@ -286,7 +286,7 @@ class CasebookView extends ItemView {
     return this.records.filter(record => {
       if (this.statusFilter !== '全部' && record.status !== this.statusFilter) return false;
       const text = [record.question, record.primaryName, record.changedName, record.date,
-        record.tags.join(' '), record.judgment, record.feedback, record.review].join(' ').toLocaleLowerCase();
+        record.tags.join(' '), record.judgment, record.feedback, record.review, record.learningNotes].join(' ').toLocaleLowerCase();
       return words.every(word => text.includes(word));
     });
   }
@@ -362,6 +362,7 @@ class CasebookView extends ItemView {
     this.renderTextSection(record, '当时判断', record.judgment);
     this.renderTextSection(record, '实际反馈', record.feedback);
     this.renderTextSection(record, '复盘', record.review);
+    this.renderTextSection(record, '听课思路与感悟', record.learningNotes || '');
   }
 
   private renderTextSection(record: CaseData, heading: string, content: string): void {
@@ -484,6 +485,14 @@ class CaseEditorModal extends Modal {
     const judgment = this.textarea(noteFields, '当时判断', record.judgment);
     const feedback = this.textarea(noteFields, '实际反馈', record.feedback);
     const review = this.textarea(noteFields, '复盘', record.review);
+    const learning = element(form, 'details', 'gua-advanced') as HTMLDetailsElement;
+    learning.open = Boolean(record.learningNotes);
+    element(learning, 'summary', undefined, '听课思路与感悟（选填）');
+    const learningFields = element(learning, 'div', 'gua-form gua-advanced-body');
+    element(learningFields, 'p', 'gua-muted', '记录老师的断卦思路、自己的理解、疑问，以及对其他卦例的启发。');
+    const learningNotes = this.textarea(learningFields, '听课笔记', record.learningNotes || '');
+    learningNotes.placeholder = '例如：老师先看什么？我原先怎么想？哪里有新的理解？还有哪些疑问？';
+    learningNotes.rows = 8;
     const actions = element(form, 'div', 'gua-detail-actions');
     button(actions, '取消', () => this.close());
     const save = document.createElement('button');
@@ -502,6 +511,7 @@ class CaseEditorModal extends Modal {
       record.judgment = judgment.value;
       record.feedback = feedback.value;
       record.review = review.value;
+      record.learningNotes = learningNotes.value;
       void this.plugin.saveCase(record)
         .then(() => { this.close(); void this.afterSave(); new Notice('卦例已保存。'); })
         .catch(error => new Notice(error instanceof Error ? error.message : '保存失败。'))

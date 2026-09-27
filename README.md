@@ -37,3 +37,5 @@ Windows 安装 Edge 后，可运行 `npm run test:ui`。它使用实际插件编
 源码、测试、样式和构建配置由 Git 管理；依赖、备份、界面测试截图及生成的安装包保留在本地并忽略提交。新电脑克隆后运行 `npm ci`、`npm run check` 生成插件。日常修改完成后，用 `git status` 查看变更，再 `git add`、`git commit` 和 `git push`。
 
 Obsidian 库中的安装目录与开发目录相互独立；构建后将 `main.js`、`manifest.json`、`styles.css` 和 `THIRD-PARTY-NOTICES.txt` 更新到库内 `.obsidian/plugins/gua-casebook/`。
+
+“听课思路与感悟”是与“标签、判断与反馈”同级的独立折叠区，支持 Markdown，保存后可在详情页查看，也参与全文检索。旧卦例无需迁移。

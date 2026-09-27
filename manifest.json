@@ -1,7 +1,7 @@
 {
   "id": "gua-casebook",
   "name": "卦例档案",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "minAppVersion": "1.7.2",
   "description": "在 Obsidian 中录入、检索与复盘六爻卦例；每例保存在独立 Markdown 文件中。",
   "author": "Gua Casebook Contributors",

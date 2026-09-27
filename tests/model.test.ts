@@ -19,6 +19,7 @@ describe('卦例 Markdown', () => {
     record.judgment = '当时判断第一行\n## 实际反馈\n这只是判断中的小标题';
     record.feedback = '## 复盘\n实际结果：已落实';
     record.review = '## 自己的补充标题\n继续复盘';
+    record.learningNotes = '## 老师的思路\n先看用神，再结合动爻。\n## 我的疑问\n为什么这样取用？';
     const text = serializeCase(record);
     const reread = parseCase(text, '玄/六爻/个人卦例/记录.md', parseYaml);
     expect(reread).toEqual({ ...record, path: '玄/六爻/个人卦例/记录.md', sourceContent: text });
@@ -50,6 +51,15 @@ describe('卦例 Markdown', () => {
     expect(parsed).not.toBeNull();
     expect(serializeCase(parsed!)).toContain('source: 自己的来源');
     expect(serializeCase(parsed!)).toContain('## 自己附加的资料\n原文');
+  });
+
+  it('旧卦例没有听课笔记时返回空文本，保留原复盘', () => {
+    const record = emptyCase();
+    record.review = '原有复盘';
+    const old = serializeCase(record).replace(/\n## 听课思路与感悟\n[\s\S]*?(?=<!-- gua-casebook:document:end -->)/, '');
+    const parsed = parseCase(old, '旧记录.md', parseYaml)!;
+    expect(parsed.learningNotes).toBe('');
+    expect(parsed.review).toBe('原有复盘');
   });
 
   it('文件名去掉 Windows 禁用字符', () => {

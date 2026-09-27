@@ -33,6 +33,7 @@ export interface CaseData {
   judgment: string;
   feedback: string;
   review: string;
+  learningNotes: string;
   chartInfo?: ChartInfo;
 }
 
@@ -53,7 +54,7 @@ export function emptyCase(now: Date = new Date()): CaseData {
     id: globalThis.crypto.randomUUID(), path: '', sourceContent: '', question: '', date: local,
     status: '待反馈', tags: [], method: '', pillars: '', voidBranches: '',
     primaryName: '', changedName: '', lines: LINE_NAMES.map(() => emptyLine()),
-    judgment: '', feedback: '', review: '',
+    judgment: '', feedback: '', review: '', learningNotes: '',
   };
 }
 
@@ -89,7 +90,7 @@ function parseCells(row: string): string[] {
 }
 
 function section(body: string, start: string, next?: string): string {
-  const key = start === '当时判断' ? 'judgment' : start === '实际反馈' ? 'feedback' : 'review';
+  const key = start === '听课思路与感悟' ? 'learning' : start === '当时判断' ? 'judgment' : start === '实际反馈' ? 'feedback' : 'review';
   const open = `<!-- gua-casebook:${key}:start -->`;
   const close = `<!-- gua-casebook:${key}:end -->`;
   const markerStart = body.indexOf(open);
@@ -175,6 +176,12 @@ export function serializeCase(record: CaseData): string {
     '<!-- gua-casebook:review:start -->',
     record.review.trim(),
     '<!-- gua-casebook:review:end -->',
+    '',
+    '## 听课思路与感悟',
+    '',
+    '<!-- gua-casebook:learning:start -->',
+    (record.learningNotes ?? '').trim(),
+    '<!-- gua-casebook:learning:end -->',
     endMarker,
     additionalNotes.trim() ? additionalNotes.trimStart() : '',
     '',
@@ -220,7 +227,8 @@ export function parseCase(content: string, path: string,
     voidBranches: stringField('gua-void'), primaryName, changedName, lines,
     judgment: section(body, '当时判断', '实际反馈'),
     feedback: section(body, '实际反馈', '复盘'),
-    review: section(body, '复盘'),
+    review: section(body, '复盘', '听课思路与感悟'),
+    learningNotes: section(body, '听课思路与感悟'),
   };
 }
 

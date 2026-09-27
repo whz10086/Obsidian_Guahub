@@ -149,6 +149,9 @@ try {
     assert.equal(await editor.locator('.gua-pillars').textContent(), '丙午年 丁酉月 癸卯日 庚申时');
     assert.equal(await editor.getByLabel('六神', { exact: true }).count(), 0);
     await editor.getByLabel('当时判断', { exact: true }).fill('保留手填判断');
+    await editor.locator('summary').filter({ hasText: '听课思路与感悟' }).click();
+    await editor.getByLabel('听课笔记', { exact: true }).fill('老师先取用神，我需要再比较月建和动爻。');
+    assert.equal(await editor.locator('form > details').count(), 2);
     await editor.locator('.gua-line-toggle').first().click();
     await editor.getByRole('button', { name: '保存卦例', exact: true }).click();
     await editor.waitFor({ state: 'detached' });
@@ -159,7 +162,9 @@ try {
     assert.equal(updated.lines[0].primaryBranch, '丁未');
     assert.equal(updated.lines[0].primaryYao, '阴');
     assert.equal(updated.judgment, '保留手填判断');
+    assert.equal(updated.learningNotes, '老师先取用神，我需要再比较月建和动爻。');
     await page.getByRole('button', { name: '编辑', exact: true }).click();
+    assert.equal(await editor.getByLabel('听课笔记', { exact: true }).inputValue(), '老师先取用神，我需要再比较月建和动爻。');
     await editor.getByLabel('起卦时间', { exact: true }).fill('2026-09-27T15:44:46');
     assert.match(await editor.locator('.gua-pillars').textContent(), /甲辰日/);
     await editor.getByRole('button', { name: '保存卦例', exact: true }).click();
